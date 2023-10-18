@@ -9,6 +9,7 @@ For using the application, there are already 2 users created:
 Admin role with credentials:
 -Username: "admin@admin.com"
 -Password: "Admin123"
+
 User role with credentials:
 -Username: "user@user.com"
 -Password: "User1234"
