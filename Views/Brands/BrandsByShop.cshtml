@@ -1,0 +1,77 @@
+﻿@model ClothesShopProject.ViewModels.BrandFilter
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Brands at "@ViewBag.Message"</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<form asp-controller="Brands" asp-action="BrandsByShop" method="get">
+    <p>
+        Name: <input type="text" asp-for="Name" />
+        @*Rank:
+        <select asp-for="Rank" asp-items="Model.Ranks">
+        <option value="">All</option>
+        </select>*@
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Brands[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brands[0].Year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brands[0].CountryOfOrigin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brands[0].Shop)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Brands)
+        {
+            <tr>
+                <td width=20%>
+                    <img src="~/images/@item.ProfilePicture"
+                         width=100% height=100% position=absolute />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CountryOfOrigin)
+                </td>
+                <td>
+                    <a asp-controller="Shops" asp-action="Details" asp-route-id="@item.ShopId">@Html.DisplayFor(modelItem => item.Shop.Name)</a>
+                </td>
+                <td>
+
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    @Html.Raw("|")
+
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+
+                    @Html.Raw("|")
+
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

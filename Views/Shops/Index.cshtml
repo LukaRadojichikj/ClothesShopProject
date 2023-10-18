@@ -1,0 +1,88 @@
+﻿@model ClothesShopProject.ViewModels.ShopFilter
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
+<form asp-controller="Shops" asp-action="Index" method="get">
+    <p>
+        Name: <input type="text" name="Name" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th>
+                Number of Shops
+            </th>
+            <th>
+                <div style="text-align: center;">
+                    Logo
+                </div>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Shops)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumOfShops)
+                </td>
+                <td width=20%>
+                    <img src="~/images/@item.Logo"
+                         width=100% height=100% position=absolute />
+                </td>
+                <td>
+                    <a asp-controller="Brands" asp-action="BrandsByShop" asp-route-id="@item.Id">View Brands</a>
+                </td>
+                <td>
+                    <a asp-controller="ShopApparelShoes" asp-action="ApparelShoesByShop" asp-route-id="@item.Id">View Items</a>
+                </td>
+
+                <td>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            @Html.Raw("|")
+                            ;
+                        }
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            @Html.Raw("|")
+                            ;
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <a href="@Url.Action("DeleteAll", "Shops")" class="btn btn-danger">Delete All</a>
+}

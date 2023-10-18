@@ -1,0 +1,103 @@
+﻿@model ClothesShopProject.ViewModels.ShopApparelShoeFilter
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Apparel Shoes from shop "@ViewBag.Message"</h1>
+
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+<form asp-controller="ShopApparelShoes" asp-action="ApparelShoesByShop" method="get">
+    <p>
+        Name (Apparel/Shoe): <input type="text" name="nameSearch" value="@Model.Name" />
+        Type:
+        <select name="typeSearch">
+            <option value="">All</option>
+            <option value="Apparel">Apparel</option>
+            <option value="Shoe">Shoe</option>
+        </select>
+
+        Sort by Price:
+        <select name="sort">
+            <option value="">All</option>
+            <option value="Ascending">Ascending</option>
+            <option value="Descending">Descending</option>
+        </select>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ShopApparelShoes[0].Shops)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShopApparelShoes[0].Apparel.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShopApparelShoes[0].Shoe.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShopApparelShoes[0].Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ShopApparelShoes)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Shops.Name)
+                </td>
+                <td>
+                    @if (item.Apparel != null)
+                    {
+                        <text>Apparel</text>
+                    }
+                    else if (item.Shoe != null)
+                    {
+                        <text>Shoe</text>
+                    }
+                </td>
+                <td>
+                    @if (item.Apparel != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Apparel.Name)
+                    }
+                    else if (item.Shoe != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Shoe.Name)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)$
+                </td>
+                
+                <td>
+                    
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        @Html.Raw("|")
+                        ;
+                    
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+
+                    
+                        @Html.Raw("|")
+                        ;
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    
+                    
+                       
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
