@@ -1,0 +1,100 @@
+﻿@model ClothesShopProject.ViewModels.BrandFilter
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Brands</h1>
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+<form asp-controller="Brands" asp-action="Index" method="get">
+    <p>
+        Name: <input type="text" name="Name" />
+        Shop:
+        <select asp-for="Shop" asp-items="Model.Shops">
+            <option value="">All</option>
+        </select>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Brands[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brands[0].Year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brands[0].CountryOfOrigin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brands[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brands[0].ProfilePicture)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brands[0].Shop.Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brands[0].Shop)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Brands)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CountryOfOrigin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td width=20%>
+                    <img src="~/images/@item.ProfilePicture"
+                         width=100% height=100% position=absolute />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Shop.Country)
+                </td>
+                <td>
+                    <a asp-controller="Shops" asp-action="Index" asp-route-Name="@item.Shop.Name">
+                        @Html.DisplayFor(modelItem => item.Shop.Name)
+                    </a>
+                </td>
+                <td>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </td>
+            </tr>
+
+
+        }
+    </tbody>
+</table>
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+        <a href="@Url.Action("DeleteAll", "Brands")" class="btn btn-danger">Delete All</a>
+}

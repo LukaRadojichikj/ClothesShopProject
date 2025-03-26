@@ -1,0 +1,70 @@
+﻿@model ClothesShopProject.ViewModels.ApparelFilter
+
+@{
+    ViewData["Title"] = "Apparels";
+}
+
+<h1>Apparels</h1>
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
+<form asp-controller="Apparels" asp-action="Index" method="get">
+    <p>
+        Name:
+        <input type="text" asp-for="Name" />
+        Colour:
+        <select asp-for="Colour" asp-items="Model.Colours">
+            <option value="">All</option>
+        </select>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Picture</th>
+            <th>Name</th>
+            <th>Colour</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Apparels)
+        {
+            <tr>
+                <td width="20%">
+                    <img src="~/images/@item.Picture" width="100%" height="100%" />
+                </td>
+                <td>@item.Name</td>
+                <td>@item.Colour</td>
+                <td>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+                    {
+                        <a asp-controller="ShopApparelShoes" asp-action="Index" asp-route-Name="@item.Name">Buy</a>
+
+                    }
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <a href="@Url.Action("DeleteAll", "Apparels")" class="btn btn-danger">Delete All</a>
+}

@@ -1,0 +1,11 @@
+﻿@model ClothesShopProject.Models.ShopApparelShoe
+
+<h1>
+    Are you sure you want to buy these clothes?
+</h1>
+
+<form asp-action="ProceedCart">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Buy" class="btn btn-primary" />
+    <a asp-controller="CartItems" asp-action="ShowCart" class="btn btn-secondary ms-2">Back to Cart</a>
+</form>

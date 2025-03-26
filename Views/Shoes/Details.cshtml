@@ -1,0 +1,48 @@
+﻿@model ClothesShopProject.Models.Shoe
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Shoe</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Picture)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="~/images/@Model.Picture"
+                 width=80% height=100% position=absolute
+                 asp-append-version="true" />
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Colour)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Colour)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Size)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Size)
+        </dd>
+
+    </dl>
+</div>
+<div>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+    }
+    <a asp-action="Index">Back to List</a>
+</div>

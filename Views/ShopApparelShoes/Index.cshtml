@@ -1,0 +1,106 @@
+﻿@model ClothesShopProject.ViewModels.ShopApparelShoeFilter
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Buy</h1>
+
+
+<form asp-controller="ShopApparelShoes" asp-action="Index" method="get">
+    <p>
+        Shop Name: <input type="text" asp-for="Shop" />
+        Name (Apparel/Shoe): <input type="text" asp-for="Name" />
+        Type:
+        <select asp-for="Type" asp-items="Model.TypeOptions">
+            <option value="">All</option>
+        </select>
+        Color:
+        <select asp-for="Color" asp-items="Model.ColorOptions">
+            <option value="">All</option>
+        </select>
+
+        Sort by Price:
+        <select asp-for="Sort" asp-items="Model.SortOptions">
+            <option value="">All</option>
+        </select>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ShopApparelShoes[0].Shop)
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShopApparelShoes[0].Apparel.Name)
+            </th>
+            <th>
+                Color
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.ShopApparelShoes[0].Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ShopApparelShoes)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Shop.Name)
+                </td>
+                <td>
+                    @if (item.Apparel != null)
+                    {
+                        <a asp-controller="Apparels">Apparel</a>
+                    }
+                    else if (item.Shoe != null)
+                    {
+                        <a asp-controller="Shoes">Shoe</a>
+                    }
+                </td>
+                <td>
+                    @if (item.Apparel != null)
+                    {
+                        <a asp-action="Details" asp-controller="Apparels" asp-route-id="@item.Apparel.Id">@item.Apparel.Name</a>
+                    }
+                    else if (item.Shoe != null)
+                    {
+                        <a asp-action="Details" asp-controller="Shoes" asp-route-id="@item.Shoe.Id">@item.Shoe.Name</a>
+                    }
+                </td>
+                <td>
+                    @if (item.Apparel != null)
+                    {
+                        @item.Apparel.Colour
+                    }
+                    else if (item.Shoe != null)
+                    {
+                        @item.Shoe.Colour
+                    }
+                </td>
+                <td>
+                    @item.Price.ToString("F2")
+                </td>
+                <td>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+                    {
+                        <a asp-action="BuyItem" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Buy Item</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

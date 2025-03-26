@@ -1,0 +1,97 @@
+﻿@model ClothesShopProject.ViewModels.ShopFilter
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border-bottom: 1px solid #ccc;
+        padding: 12px 15px;
+        text-align: left;
+    }
+
+        td:last-child {
+            white-space: nowrap;
+        }
+</style>
+
+<h1>Shops</h1>
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
+<form asp-controller="Shops" asp-action="Index" method="get">
+    <p>
+        Name: <input type="text" name="Name" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th>
+                Number of Shops
+            </th>
+            <th>
+                <div style="text-align: center;">
+                    Logo
+                </div>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Shops)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumOfShops)
+                </td>
+                <td width=20%>
+                    <img src="~/images/@item.Logo"
+                         width=100% height=100% position=absolute class="me-5" />
+                </td>
+                <td>
+                    <a asp-controller="Brands" asp-action="Index" asp-route-Shop="@item.Name" class="me-2">View Brands</a>
+                    <a asp-controller="ShopApparelShoes" asp-action="Index" asp-route-Shop="@item.Name" class=" me-5">View Items</a>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="me-2">Edit</a>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id" class="me-2">Details</a>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id" class=" me-2"> Delete </a>
+                    }
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <a href="@Url.Action("DeleteAll", "Shops")" class="btn btn-danger">Delete All</a>
+}

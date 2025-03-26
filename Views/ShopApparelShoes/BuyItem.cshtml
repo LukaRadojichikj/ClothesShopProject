@@ -1,0 +1,52 @@
+﻿@model ClothesShopProject.Models.ShopApparelShoe
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Buy item</h1>
+
+<h3>Are you sure you want to buy this?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Shop)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Shop.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Apparel.Name) <!-- Display label for Apparel -->
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Apparel != null) 
+            {
+                @Html.DisplayFor(model => model.Apparel.Name) <!-- Display apparel name -->
+            }
+            else if (Model.Shoe != null) 
+            {
+                @Html.DisplayFor(model => model.Shoe.Name) <!-- Display shoe name -->
+            }
+            else
+            {
+                <!-- Handle the case when neither Apparel nor Shoe is present -->
+                <p>No apparel or shoe available</p>
+            }
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)$
+        </dd>
+    </dl>
+
+    <form asp-action="BuyItemCompleted">
+        <input type="hidden" asp-for="Id" />
+        <input type="number" id="quantity" name="quantity" value="1" min="1" required />
+        <input type="submit" value="Add to cart" class="btn btn-primary btn-sm" /> 
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

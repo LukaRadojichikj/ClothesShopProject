@@ -1,0 +1,140 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ClothesShopProject.Areas.Identity.Data
+
+@inject SignInManager<ClothesShopProjectUser> SignInManager
+@inject UserManager<ClothesShopProjectUser> UserManager
+
+<style>
+    a.navbar-brand {
+        white-space: normal;
+        text-align: center;
+        word-break: break-all;
+    }
+
+    a {
+        color: #0077cc;
+    }
+
+    .btn-primary {
+        color: #fff;
+        background-color: #1b6ec2;
+        border-color: #1861a;
+    }
+
+    .nav-item:hover, .nav-item:hover, .nav-item:hover, .nav-item:hover {
+        color: #fff;
+        background-color: black;
+        border-color: rgb(102, 153, 153);
+    }
+
+    .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+        color: #fff;
+        background-color: #1b6ec2;
+        border-color: #1861ac;
+    }
+
+    .border-top {
+        border-top: 1px solid #e5e5e5;
+    }
+
+    .border-bottom {
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    .box-shadow {
+        box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    }
+
+    button.accept-policy {
+        font-size: 1rem;
+        line-height: inherit;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        white-space: nowrap;
+        line-height: 60px;
+    }
+
+    button{
+        border:none;
+        background-color:white;
+        color: black;
+        text-decoration:none;
+    }
+
+    .custom-logout-button {
+        color: black !important;
+        text-decoration: none;
+        background-color: white !important;
+        border: none;
+    }
+
+    .custom-logout-button:hover {
+        color: white !important;
+        background-color: black !important;
+    }
+
+</style>
+
+
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+        @if (User.IsInRole("User"))
+        {
+            <li class="nav-item position-relative">
+                <a class="nav-link" asp-controller="CartItems" asp-action="ShowCart"
+                   style="color: black; text-decoration: none;"
+                   onmouseover="this.style.color='white';" onmouseout="this.style.color='black';">
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    Cart
+                    <span id="cart-count" class="badge bg-dark text-white rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
+                </a>
+            </li>
+
+        }
+    <li class="nav-item">
+            <a id="manage" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" style="color: black; text-decoration: none;" onmouseover="this.style.color='white';" onmouseout="this.style.color='black';">Hello @UserManager.GetUserName(User)!</a>
+    </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" method="post" id="logoutForm">
+                <button type="submit" class="nav-link btn btn-link custom-logout-button">
+                    Logout
+                </button>
+            </form>
+        </li>
+
+}
+else
+{
+    <li class="nav-item">
+         <a class="nav-link" id="register" asp-area="Identity" asp-page="/Account/Register" style="color: black; text-decoration: none;" onmouseover="this.style.color='white';" onmouseout="this.style.color='black';">Register</a>
+    </li>
+    <li class="nav-item">
+            <a class="nav-link" id="login" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Context.Request.Path" style="color: black; text-decoration: none;" onmouseover="this.style.color='white';" onmouseout="this.style.color='black';">Login</a>
+    </li>
+}
+</ul>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('/CartItems/GetCartItemCount')
+                .then(response => response.json())
+                .then(count => {
+                    const badge = document.getElementById("cart-count");
+                    if (badge) {
+                        badge.textContent = count;
+                        badge.style.display = count > 0 ? "inline-block" : "none";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching cart count:", error);
+                });
+        });
+    </script>
+
+}

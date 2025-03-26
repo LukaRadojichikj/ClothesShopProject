@@ -1,0 +1,61 @@
+﻿@model ClothesShopProject.ViewModels.AddOrEditBrand
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Brand</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Brand.Id" />
+            <div class="form-group">
+                <label asp-for="Brand.Name" class="control-label"></label>
+                <input asp-for="Brand.Name" class="form-control" />
+                <span asp-validation-for="Brand.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Brand.Year" class="control-label"></label>
+                <input asp-for="Brand.Year" class="form-control" />
+                <span asp-validation-for="Brand.Year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Brand.CountryOfOrigin" class="control-label"></label>
+                <input asp-for="Brand.CountryOfOrigin" class="form-control" />
+                <span asp-validation-for="Brand.CountryOfOrigin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Brand.Description" class="control-label"></label>
+                <input asp-for="Brand.Description" class="form-control" />
+                <span asp-validation-for="Brand.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProfilePictureFile" class="control-label">Upload Profile Picture</label>
+                <input asp-for="ProfilePictureFile" type="file" class="form-control" />
+                <span asp-validation-for="ProfilePictureFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShopId" class="control-label"></label>
+                <select asp-for="ShopId" class="form-control" asp-items="Model.AvailableShops"></select>
+                <span asp-validation-for="ShopId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

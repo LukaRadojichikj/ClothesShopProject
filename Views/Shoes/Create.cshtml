@@ -1,0 +1,59 @@
+﻿@model ClothesShopProject.ViewModels.AddOrEditShoe
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Shoe</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Shoe.Name" class="control-label"></label>
+                <input asp-for="Shoe.Name" class="form-control" />
+                <span asp-validation-for="Shoe.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Shoe.Colour" class="control-label"></label>
+                <input asp-for="Shoe.Colour" class="form-control" />
+                <span asp-validation-for="Shoe.Colour" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Shoe.Size" class="control-label"></label>
+                <input asp-for="Shoe.Size" class="form-control" />
+                <span asp-validation-for="Shoe.Size" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PictureFile" class="control-label">Upload Picture</label>
+                <input asp-for="PictureFile" type="file" class="form-control" />
+                <span asp-validation-for="PictureFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Price" class="control-label">Price</label>
+                <input name="Price" class="form-control" step="0.01" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShopId" class="control-label"></label>
+                <select asp-for="ShopId" class="form-control" asp-items="Model.AvailableShops">
+                </select>
+                <span asp-validation-for="ShopId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
